@@ -11,10 +11,12 @@ class Asteroids extends Scene {
   constructor() {
     super();
 
+    // Create a ship actor
     const ship = new SpriteActor(TEXTURES['asteroids']['ship-blue'])
       .addTo(this, this.stage);
     ship.position.set(engine.width * 0.5, engine.height * 0.5);
 
+    // Give the ship ability to move
     new AsteroidsMove({
       forwardKey: 'W',
       backwardKey: 'S',
@@ -24,7 +26,13 @@ class Asteroids extends Scene {
       forwardForce: 30,
       torque: 2,
     }).addTo(ship, this).activate();
+
+    // Make the ship able to wrap around screen
     new WrapAroundScreen().addTo(ship, this).activate();
+
+    // TODO: Make the ship able to shoot bullets
+
+    // TODO: Spawn asteroids
   }
 }
 
