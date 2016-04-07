@@ -18,14 +18,16 @@ class Asteroids extends Scene {
 
     // Give the ship ability to move
     new AsteroidsMove({
-      forwardKey: 'W',
-      backwardKey: 'S',
-      leftKey: 'A',
-      rightKey: 'D',
-      forwardForce: 40,
-      forwardForce: 30,
-      torque: 2,
-    }).addTo(ship, this).activate();
+        forwardKey: 'W',
+        backwardKey: 'S',
+        leftKey: 'A',
+        rightKey: 'D',
+        forwardForce: 40,
+        forwardForce: 30,
+        torque: 2,
+      })
+      .addTo(ship, this)
+      .activate();
 
     // Make the ship able to wrap around screen
     new WrapAroundScreen().addTo(ship, this).activate();
