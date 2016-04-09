@@ -13,12 +13,13 @@ import 'game/loading';
 // Scenes
 import 'game/samples/asteroids';
 import 'game/samples/anchor-to-screen';
+import 'game/samples/two-way-move';
 
 PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
 
 class Main extends Scene {
   awake() {
-    engine.setScene('AnchorToScreen');
+    engine.setScene('TwoWayMove');
   }
 };
 engine.addScene('Main', Main);
