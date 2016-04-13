@@ -14,12 +14,13 @@ import 'game/loading';
 import 'game/samples/asteroids';
 import 'game/samples/anchor-to-screen';
 import 'game/samples/two-way-move';
+import 'game/samples/tilemap';
 
 PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
 
 class Main extends Scene {
   awake() {
-    engine.setScene('TwoWayMove');
+    engine.setScene('Tilemap');
   }
 };
 engine.addScene('Main', Main);
