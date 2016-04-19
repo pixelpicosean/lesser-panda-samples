@@ -74,7 +74,7 @@ export default {
   },
 
   storage: {
-    id: 'lpanda',
+    id: 'lp-samples',
   },
 
   physics: {
@@ -84,7 +84,7 @@ export default {
      * - SAT:  Powerful SAT based, have convex Polygon and rotation support
      * @default AABB
      */
-    solver: 'AABB',
+    solver: 'SAT',
     /**
      * Broad phase algorithm to use for collision detection
      * - Simple: Check collision between every possible pairs, for small amount of bodies
@@ -98,7 +98,7 @@ export default {
      * @type {Number}
      * @default 5
      */
-    spatialFactor: 5,
+    spatialFactor: 8,
   },
 
   /**
