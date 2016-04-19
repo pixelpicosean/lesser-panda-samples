@@ -32,7 +32,8 @@ class TilemapSample extends Scene {
     box.collideAgainst = [GROUPS.SOLID];
     box.body.collide = function(other, res) {
       if (other.collisionGroup === GROUPS.SOLID) {
-        if (res.overlapN.y > 0) {
+        if ((this.velocity.y < 0 && res.overlapN.y < 0) ||
+          this.velocity.y > 0 && res.overlapN.y > 0) {
           this.velocity.y = 0;
         }
         return true;

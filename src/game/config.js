@@ -98,7 +98,7 @@ export default {
      * @type {Number}
      * @default 5
      */
-    spatialFactor: 8,
+    spatialFactor: 16,
   },
 
   /**
