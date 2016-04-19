@@ -2,6 +2,7 @@ import engine from 'engine/core';
 import PIXI from 'engine/pixi';
 import Scene from 'engine/scene';
 import Tilemap from 'engine/tilemap';
+import keyboard from 'engine/keyboard';
 
 import PrimitiveActor from 'engine/actors/primitive-actor';
 
@@ -25,16 +26,26 @@ class TilemapSample extends Scene {
 
     // Create a box that collides with the tilemap
     const box = new PrimitiveActor('Box', 0xfff4ed, 8).addTo(this, this.bottomLayer);
-    box.mass = 0.02;
-    box.velocityLimit.set(64);
+    box.mass = 0.4;
+    box.velocityLimit.set(200);
     box.collisionGroup = GROUPS.BOX;
     box.collideAgainst = [GROUPS.SOLID];
-    box.body.collide = (other) => {
+    box.body.collide = function(other, res) {
       if (other.collisionGroup === GROUPS.SOLID) {
+        if (res.overlapN.y > 0) {
+          this.velocity.y = 0;
+        }
         return true;
       }
     };
     box.position.set(16, 144);
+    this.box = box;
+
+    keyboard.on('keydown', (k) => {
+      if (k === 'UP') {
+        box.velocity.y = -160;
+      }
+    });
 
     // Collision layer debug draw: edges and normals
     this.drawBody(box.body, box.sprite);
@@ -42,6 +53,18 @@ class TilemapSample extends Scene {
       this.drawBodyStatic(tilemap.collisionLayer.bodies[i], this.topLayer);
     }
   }
+  update(_, dt) {
+    if (keyboard.down('LEFT') && !keyboard.down('RIGHT')) {
+      this.box.velocity.x = -80;
+    }
+    else if (!keyboard.down('LEFT') && keyboard.down('RIGHT')) {
+      this.box.velocity.x = 80;
+    }
+    else {
+      this.box.velocity.x = 0;
+    }
+  }
+
   drawBody(body, parent, lineWidth = 1) {
     for (let i = 0; i < body.shape.points.length; i++) {
       let p0 = body.shape.points[i];
