@@ -15,6 +15,7 @@ loader.addAsset('room.json', 'map');
 
 // Load bitmap fonts
 loader.addAsset('KenPixel.fnt');
+loader.addAsset('04b03.fnt');
 
 // Load audio files
 

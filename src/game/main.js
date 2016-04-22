@@ -15,12 +15,13 @@ import 'game/samples/asteroids';
 import 'game/samples/anchor-to-screen';
 import 'game/samples/two-way-move';
 import 'game/samples/tilemap';
+import 'game/samples/timer';
 
 PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
 
 class Main extends Scene {
   awake() {
-    engine.setScene('Tilemap');
+    engine.setScene('Timer');
   }
 };
 engine.addScene('Main', Main);
