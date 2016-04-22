@@ -1,3 +1,6 @@
 # Samples of LesserPanda game engine
 
-- [ ] Asteroid
+- [x] Timer
+- [x] [Behavior] Anchor to screen
+- [x] [Behavior] Two way move
+- [ ] [Behavior] Asteroid
