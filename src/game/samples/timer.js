@@ -4,6 +4,8 @@ import Scene from 'engine/scene';
 import device from 'engine/device';
 import Timer from 'engine/timer';
 
+import { TEXTURES } from 'game/data';
+
 class TimerScene extends Scene {
   awake() {
     // Enable mouse/touch input
@@ -19,15 +21,26 @@ class TimerScene extends Scene {
       font: '36px 04b03',
     }).addTo(this.stage);
 
+    this.asteroid = new PIXI.Sprite(TEXTURES['asteroids'].asteroid).addTo(this.stage);
+    this.asteroid.anchor.set(0.5);
+    this.asteroid.position.set(0, engine.height * 0.5);
+    this.asteroid.visible = false;
+
     // Start the first case
     this.startCase_Later();
   }
-  update() {
+  update(_, dt) {
     // Center align texts
     this.title.position.set(engine.width * 0.5, 16)
       .subtract(this.title.width * 0.5, this.title.height * 0.5);
     this.text.position.set(engine.width * 0.5, engine.height * 0.5)
       .subtract(this.text.width * 0.5, this.text.height * 0.5);
+
+    // Move the asteroid
+    this.asteroid.position.x += dt * 100;
+    if (this.asteroid.position.x > engine.width) {
+      this.asteroid.position.x -= engine.width;
+    }
   }
 
   startCase_Later() {
@@ -57,8 +70,27 @@ class TimerScene extends Scene {
       // Stop the inteval timer when looped 5 times
       if (count > 5) {
         Timer.remove(repeatTimer);
-        Timer.later(1000, this.waitForRepeat, this);
+        Timer.later(1000, this.startCase_Slowmotion, this);
       }
+    });
+  }
+  startCase_Slowmotion() {
+    this.title.text = 'before slowmotion';
+    this.text.text = '';
+
+    this.asteroid.visible = true;
+
+    Timer.later(750, () => {
+      this.title.text = 'slowmotion now';
+      engine.speed = 0.5;
+    });
+    Timer.later(2500, () => {
+      this.title.text = 'normal speed again';
+      engine.speed = 1;
+    });
+    Timer.later(4000, () => {
+      this.asteroid.visible = false;
+      this.waitForRepeat();
     });
   }
 
