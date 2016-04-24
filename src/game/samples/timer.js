@@ -25,6 +25,7 @@ class TimerScene extends Scene {
     this.asteroid.anchor.set(0.5);
     this.asteroid.position.set(0, engine.height * 0.5);
     this.asteroid.visible = false;
+    this.moveAsteroid = false;
 
     // Start the first case
     this.startCase_Later();
@@ -37,7 +38,9 @@ class TimerScene extends Scene {
       .subtract(this.text.width * 0.5, this.text.height * 0.5);
 
     // Move the asteroid
-    this.asteroid.position.x += dt * 100;
+    if (this.moveAsteroid) {
+      this.asteroid.position.x += dt * 100;
+    }
     if (this.asteroid.position.x > engine.width) {
       this.asteroid.position.x -= engine.width;
     }
@@ -79,6 +82,7 @@ class TimerScene extends Scene {
     this.text.text = '';
 
     this.asteroid.visible = true;
+    this.moveAsteroid = true;
 
     Timer.later(750, () => {
       this.title.text = 'slowmotion now';
@@ -90,6 +94,41 @@ class TimerScene extends Scene {
     });
     Timer.later(4000, () => {
       this.asteroid.visible = false;
+      this.moveAsteroid = false;
+      this.startCase_Tag();
+    });
+  }
+  startCase_Tag() {
+    this.title.text = 'Tagged timers';
+    this.text.text = '';
+
+    this.asteroid.visible = true;
+    this.asteroid.position.x = 0;
+
+    let count = 0;
+    let t1 = Timer.interval(50, () => {
+      this.text.text = `${count++}`;
+    }, null, 'tag_1');
+    let t2 = Timer.interval(50, () => {
+      this.asteroid.position.x += 10;
+    }, null, 'tag_2');
+    Timer.later(2000, () => {
+      this.title.text = 'Pause tag 2';
+      Timer.pauseTimersTagged('tag_2');
+    });
+    Timer.later(3000, () => {
+      this.title.text = 'Resume tag 2';
+      Timer.resumeTimersTagged('tag_2');
+    });
+    Timer.later(4000, () => {
+      this.text.text = '';
+
+      Timer.remove(t1);
+      Timer.remove(t2);
+
+      this.asteroid.visible = false;
+      this.asteroid.position.x = 0;
+
       this.waitForRepeat();
     });
   }
