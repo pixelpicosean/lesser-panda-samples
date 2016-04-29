@@ -5,6 +5,7 @@ import Actor from 'engine/actor';
 
 import { TEXTURES, GROUPS } from 'game/data';
 
+// Extend to create a custom Actor
 class MyActor extends Actor {
   constructor() {
     super();
@@ -27,6 +28,7 @@ class Actors extends Scene {
   constructor() {
     super();
 
+    // Simply spawn an Actor with by calling component initialize methods
     let box1 = this.spawnActor(Actor, 100, 160, 'stage')
       .initGraphics({
         shape: 'Box',
