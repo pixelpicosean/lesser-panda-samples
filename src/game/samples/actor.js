@@ -24,7 +24,7 @@ class MyActor extends Actor {
   }
 }
 
-class Actors extends Scene {
+class ActorSample extends Scene {
   constructor() {
     super();
 
@@ -44,4 +44,4 @@ class Actors extends Scene {
   }
 }
 
-engine.addScene('Actors', Actors);
+engine.addScene('Actor', ActorSample);

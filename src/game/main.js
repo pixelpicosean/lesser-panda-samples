@@ -16,13 +16,13 @@ import 'game/loading';
 // import 'game/samples/two-way-move';
 // import 'game/samples/tilemap';
 // import 'game/samples/timer';
-import 'game/samples/actors';
+import 'game/samples/actor';
 
 PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
 
 class Main extends Scene {
   awake() {
-    engine.setScene('Actors');
+    engine.setScene('Actor');
   }
 };
 engine.addScene('Main', Main);
