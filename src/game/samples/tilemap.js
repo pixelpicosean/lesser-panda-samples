@@ -4,7 +4,7 @@ import Scene from 'engine/scene';
 import Tilemap from 'engine/tilemap';
 import keyboard from 'engine/keyboard';
 
-import PrimitiveActor from 'engine/actors/primitive-actor';
+import Actor from 'engine/actor';
 
 import { TEXTURES, MAP, GROUPS } from 'game/data';
 
@@ -25,11 +25,10 @@ class TilemapSample extends Scene {
       .addTo(this, this.bottomLayer);
 
     // Create a box that collides with the tilemap
-    const box = new PrimitiveActor('Box', 0xfff4ed, 8).addTo(this, this.bottomLayer);
-    box.mass = 0.4;
-    box.velocityLimit.set(200);
-    box.collisionGroup = GROUPS.BOX;
-    box.collideAgainst = [GROUPS.SOLID];
+    const box = this.spawnActor(Actor, 16, 144, 'bottomLayer')
+      .initGraphics({ shape: 'Box', color: 0xfff4ed, width: 8 })
+      .initBody({ mass: 0.4, collisionGroup: GROUPS.BOX, collideAgainst: [GROUPS.SOLID] });
+    box.body.velocityLimit.set(200);
     box.body.collide = function(other, res) {
       if (other.collisionGroup === GROUPS.SOLID) {
         if ((this.velocity.y < 0 && res.overlapN.y < 0) ||
@@ -39,12 +38,11 @@ class TilemapSample extends Scene {
         return true;
       }
     };
-    box.position.set(16, 144);
     this.box = box;
 
     keyboard.on('keydown', (k) => {
       if (k === 'UP') {
-        box.velocity.y = -160;
+        box.body.velocity.y = -160;
       }
     });
 
@@ -56,13 +54,13 @@ class TilemapSample extends Scene {
   }
   update(_, dt) {
     if (keyboard.down('LEFT') && !keyboard.down('RIGHT')) {
-      this.box.velocity.x = -80;
+      this.box.body.velocity.x = -80;
     }
     else if (!keyboard.down('LEFT') && keyboard.down('RIGHT')) {
-      this.box.velocity.x = 80;
+      this.box.body.velocity.x = 80;
     }
     else {
-      this.box.velocity.x = 0;
+      this.box.body.velocity.x = 0;
     }
   }
 

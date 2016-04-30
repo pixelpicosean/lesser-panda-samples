@@ -22,7 +22,7 @@ PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
 
 class Main extends Scene {
   awake() {
-    engine.setScene('Asteroids');
+    engine.setScene('Tilemap');
   }
 };
 engine.addScene('Main', Main);
