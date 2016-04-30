@@ -61,7 +61,7 @@ Behavior.behaviors = {};
 
 /**
  * Register a new type of behavior.
- * @param  {String}           type  Type of this behavior.
+ * @param {String}            type  Type of this behavior
  * @param  {Behavior|Object}  behv  Behavior sub-class or pure object
  */
 Behavior.register = function(type, behv) {
@@ -70,7 +70,6 @@ Behavior.register = function(type, behv) {
     return;
   }
 
-  behv.type = type;
   Behavior.behaviors[type] = behv;
 };
 
