@@ -11,18 +11,18 @@ import 'engine/device-patch';
 import 'game/loading';
 
 // Scenes
-// import 'game/samples/asteroids';
-// import 'game/samples/anchor-to-screen';
-// import 'game/samples/two-way-move';
-// import 'game/samples/tilemap';
-// import 'game/samples/timer';
+import 'game/samples/asteroids';
+import 'game/samples/anchor-to-screen';
+import 'game/samples/two-way-move';
+import 'game/samples/tilemap';
+import 'game/samples/timer';
 import 'game/samples/actor';
 
 PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
 
 class Main extends Scene {
   awake() {
-    engine.setScene('Actor');
+    engine.setScene('Asteroids');
   }
 };
 engine.addScene('Main', Main);

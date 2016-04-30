@@ -1,6 +1,7 @@
 import engine from 'engine/core';
-import PIXI from 'engine/pixi';
 import Scene from 'engine/scene';
+
+import Actor from 'engine/actor';
 
 import HorizontalMove from 'behaviors/horizontal-move';
 import VerticalMove from 'behaviors/vertical-move';
@@ -13,45 +14,39 @@ class TwoWayMove extends Scene {
 
     const textures = TEXTURES['asteroids'];
 
-    this.vertical = new PIXI.Sprite(textures['power'])
-      .addTo(this.stage);
-    this.vertical.anchor.set(0.5);
-    this.vertical.scale.set(3);
-    this.vertical.position.set(40, engine.height * 0.5);
-    new VerticalMove({
+    const vertical = this.spawnActor(Actor, 40, engine.height * 0.5, 'stage')
+      .initSprite(textures['power'])
+      .behave(VerticalMove, {
         range: 100,
         startPct: 0.5,
         useKeyboard: false,
       })
-      .addTo(this.vertical, this)
-      .activate()
       .on('reachStart', function() {
-        this.target.moveDown();
+        this.behaviors['VerticalMove'].moveDown();
       })
       .on('reachEnd', function() {
-        this.target.moveUp();
-      });
-    this.vertical.moveDown();
+        this.behaviors['VerticalMove'].moveUp();
+      });;
+    vertical.sprite.scale.set(3);
 
-    this.horizontal = new PIXI.Sprite(textures['shield'])
-      .addTo(this.stage);
-    this.horizontal.anchor.set(0.5);
-    this.horizontal.scale.set(3);
-    this.horizontal.position.set(100, engine.height * 0.5);
-    new HorizontalMove({
+    vertical.behaviors['VerticalMove'].moveDown();
+
+    const horizontal = this.spawnActor(Actor, 100, engine.height * 0.5, 'stage')
+      .initSprite(textures['shield'])
+      .behave(HorizontalMove, {
         range: 160,
         startPct: 0,
         useKeyboard: false,
       })
-      .addTo(this.horizontal, this)
-      .activate()
       .on('reachStart', function() {
-        this.target.moveRight();
+        this.behaviors['HorizontalMove'].moveRight();
       })
       .on('reachEnd', function() {
-        this.target.moveLeft();
-      });
-    this.horizontal.moveRight();
+        this.behaviors['HorizontalMove'].moveLeft();
+      });;
+    horizontal.sprite.scale.set(3);
+
+    horizontal.behaviors['HorizontalMove'].moveRight();
   }
 }
 
