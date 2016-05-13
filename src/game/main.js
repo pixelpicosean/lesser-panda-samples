@@ -17,12 +17,13 @@ import 'game/samples/two-way-move';
 import 'game/samples/tilemap';
 import 'game/samples/timer';
 import 'game/samples/actor';
+import 'game/samples/steering';
 
 PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
 
 class Main extends Scene {
   awake() {
-    engine.setScene('Tilemap');
+    engine.setScene('Steering');
   }
 };
 engine.addScene('Main', Main);
