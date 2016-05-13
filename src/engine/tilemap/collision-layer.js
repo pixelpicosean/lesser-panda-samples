@@ -60,17 +60,37 @@ function polygonInPolygon(p1, p2) {
   return inside;
 }
 
+/**
+ * CollisionLayer is a specific tile layer, which is used to support
+ * collision of a tilemap.
+ *
+ * @class CollisionLayer
+ * @constructor
+ *
+ * @param {object} def   Map data.
+ * @param {number} group Collision group for this layer.
+ */
 function CollisionLayer(def, group) {
   this.tilesize = def.tilesize;
   this.width = def.width;
   this.height = def.height;
-  this.data = utils.lift(def.data, this.width, this.height);
+  if (typeof(def.data[0]) === 'number') {
+    this.data = utils.lift(def.data, this.width, this.height);
+  }
+  else {
+    this.data = def.data;
+  }
 
   this.group = group;
   this.bodies = [];
 
   this.generateShapes();
 }
+/**
+ * Generate bodies.
+ * @memberof CollisionLayer#
+ * @method generateShapes
+ */
 CollisionLayer.prototype.generateShapes = function generateShapes() {
   var i, j;
 
@@ -258,6 +278,11 @@ CollisionLayer.prototype.generateShapes = function generateShapes() {
   }
 };
 
+/**
+ * Destroy this layer.
+ * @memberof CollisionLayer#
+ * @method destroy
+ */
 CollisionLayer.prototype.destroy = function() {
   for (var i = 0; i < this.bodies.length; i++) {
     this.bodies[i].remove();
@@ -265,6 +290,11 @@ CollisionLayer.prototype.destroy = function() {
   this.bodies.length = 0;
 };
 
+/**
+ * Add this layer to a scene.
+ * @memberof CollisionLayer#
+ * @method addTo
+ */
 CollisionLayer.prototype.addTo = function(scene) {
   this.scene = scene;
 
@@ -273,4 +303,15 @@ CollisionLayer.prototype.addTo = function(scene) {
   }
 };
 
-module.exports = exports = CollisionLayer;
+/**
+ * @requires engine/core
+ * @requires engine/vector
+ * @requires engine/physics
+ * @requires engine/pixi
+ * @requires engine/utils
+ * @requires engine/tilemap/utils
+ * @requires engine/tilemap/decomp
+ *
+ * @see CollisionLayer
+ */
+module.exports = CollisionLayer;

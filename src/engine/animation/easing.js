@@ -1,7 +1,13 @@
 /**
- * @attribute {Object} Easing
+ * Easing and interpolation functions for variable lerping.
+ *
+ * @module engine/animation/easing
  */
-var Easing = {
+
+/**
+ * Easing functions.
+ */
+module.exports.Easing = {
   Linear: {
     None: function(k) {
       return k;
@@ -196,9 +202,9 @@ var Easing = {
 };
 
 /**
- * @attribute {Object} Interpolation
+ * Interpolation functions.
  */
-var Interpolation = {
+module.exports.Interpolation = {
   Linear: function(v, k) {
     var m = v.length - 1,
       f = m * k,
@@ -265,9 +271,4 @@ var Interpolation = {
       return (2 * p1 - 2 * p2 + v0 + v1) * t3 + (-3 * p1 + 3 * p2 - 2 * v0 - v1) * t2 + v0 * t + p1;
     },
   },
-};
-
-module.exports = {
-  Easing: Easing,
-  Interpolation: Interpolation,
 };

@@ -1,18 +1,32 @@
-/**
- * Behavior is just an "interface", you can inherit from it or
- * simply create an object with the methods as light-weight
- * behavior.
- */
-
 var EventEmitter = require('engine/eventemitter3');
 
+/**
+ * Behavior base class.
+ *
+ * @class Behavior
+ * @extends {EventEmitter}
+ *
+ * @constructor
+ */
 function Behavior() {
   EventEmitter.call(this);
 
+  /**
+   * Type of this behavior
+   * @type {string}
+   */
   this.type = '';
 
+  /**
+   * Whether this behavior is currently activated
+   * @type {boolean}
+   */
   this.isActive = false;
 
+  /**
+   * Target Actor instance
+   * @type {Actor}
+   */
   this.target = null;
 };
 Behavior.prototype = Object.create(EventEmitter.prototype);
@@ -20,7 +34,9 @@ Behavior.prototype.constructor = Behavior;
 
 /**
  * Add to target
- * @param {Object} target Any objects meet this behavior's requirement
+ * @memberof Behavior#
+ * @method addTo
+ * @param {object} target Any objects meet this behavior's requirement
  * @return {Behavior} Behavior itself for chaining
  */
 Behavior.prototype.addTo = function addTo(target) {
@@ -29,7 +45,9 @@ Behavior.prototype.addTo = function addTo(target) {
 };
 /**
  * Setup the behavior
- * @param {Object} settings
+ * @memberof Behavior#
+ * @method setup
+ * @param {object} settings
  * @return {Behavior} Self for chaining
  */
 Behavior.prototype.setup = function setup(settings) {
@@ -38,6 +56,8 @@ Behavior.prototype.setup = function setup(settings) {
 };
 /**
  * Activate this behavior
+ * @memberof Behavior#
+ * @method activate
  * @return {Behavior} Behavior itself for chaining
  */
 Behavior.prototype.activate = function activate() {
@@ -46,6 +66,8 @@ Behavior.prototype.activate = function activate() {
 };
 /**
  * De-activate this behavior
+ * @memberof Behavior#
+ * @method deactivate
  * @return {Behavior} Behavior itself for chaining
  */
 Behavior.prototype.deactivate = function deactivate() {
@@ -55,14 +77,16 @@ Behavior.prototype.deactivate = function deactivate() {
 
 /**
  * Behaviors map
- * @type {Object}
+ * @memberof Behavior
+ * @type {object}
  */
 Behavior.behaviors = {};
 
 /**
  * Register a new type of behavior.
- * @param {String}            type  Type of this behavior
- * @param  {Behavior|Object}  behv  Behavior sub-class or pure object
+ * @memberof Behavior
+ * @param  {string}           type  Type of this behavior.
+ * @param  {Behavior|object}  behv  Behavior sub-class or pure object
  */
 Behavior.register = function(type, behv) {
   if (Behavior.behaviors[type]) {
@@ -73,4 +97,13 @@ Behavior.register = function(type, behv) {
   Behavior.behaviors[type] = behv;
 };
 
-module.exports = exports = Behavior;
+/**
+ * Behavior is just an "interface", you can inherit from it or
+ * simply create an object with the methods as light-weight
+ * behavior.
+ *
+ * @exports engine/behavior
+ *
+ * @requires module:engine/eventemitter3
+ */
+module.exports = Behavior;
