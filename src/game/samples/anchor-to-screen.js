@@ -15,6 +15,7 @@ class AnchorToScreenScene extends Scene {
       .initSprite(TEXTURES['asteroids']['shield'])
       .behave(AnchorToScreen, {
         left: '20%',
+        right: '60%',
         top: '20%',
       });
 
