@@ -19,6 +19,7 @@ import 'game/samples/timer';
 import 'game/samples/actor';
 import 'game/samples/steering';
 import 'game/samples/face-the-mouse';
+import 'game/samples/rotate-around';
 
 PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
 
