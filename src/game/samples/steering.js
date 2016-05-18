@@ -1,6 +1,7 @@
-import engine from 'engine/core';
+import core from 'engine/core';
 import Scene from 'engine/scene';
 import Vector from 'engine/vector';
+import rnd from 'engine/rnd';
 
 import Actor from 'engine/actor';
 
@@ -28,7 +29,9 @@ class Vehicle extends Actor {
 
     this.initBody();
 
-    this.behave(Steering, {})
+    this.behave(Steering, {
+        maxSpeed: rnd.between(80, 120)
+      })
       .behave(WrapAroundScreen, {});
   }
   prepare() {}
@@ -58,9 +61,11 @@ class SteeringScene extends Scene {
         color: 0xff0000,
       })
       .initBody({
-        velocityLimit: Vector.create(80, 80),
+        velocityLimit: Vector.create(120, 120),
       })
-      .behave(Steering, {})
+      .behave(Steering, {
+        maxSpeed: 120,
+      })
       .behave(WrapAroundScreen, {});
     a.canEverTick = true;
     a.update = function() {
@@ -73,7 +78,16 @@ class SteeringScene extends Scene {
       }
     };
 
-    this.spawnActor(Vehicle, 10, 10, 'stage', { target: a });
+    this.spawnActor(Vehicle, rnd.between(0, core.width), rnd.between(0, core.height), 'stage', { target: a });
+    this.spawnActor(Vehicle, rnd.between(0, core.width), rnd.between(0, core.height), 'stage', { target: a });
+    this.spawnActor(Vehicle, rnd.between(0, core.width), rnd.between(0, core.height), 'stage', { target: a });
+    this.spawnActor(Vehicle, rnd.between(0, core.width), rnd.between(0, core.height), 'stage', { target: a });
+    this.spawnActor(Vehicle, rnd.between(0, core.width), rnd.between(0, core.height), 'stage', { target: a });
+    this.spawnActor(Vehicle, rnd.between(0, core.width), rnd.between(0, core.height), 'stage', { target: a });
+    this.spawnActor(Vehicle, rnd.between(0, core.width), rnd.between(0, core.height), 'stage', { target: a });
+    this.spawnActor(Vehicle, rnd.between(0, core.width), rnd.between(0, core.height), 'stage', { target: a });
+    this.spawnActor(Vehicle, rnd.between(0, core.width), rnd.between(0, core.height), 'stage', { target: a });
   }
 };
-engine.addScene('Steering', SteeringScene);
+
+core.addScene('Steering', SteeringScene);
