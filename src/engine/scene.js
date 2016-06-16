@@ -1,6 +1,7 @@
 var EventEmitter = require('engine/eventemitter3');
 var engine = require('engine/core');
 var utils = require('engine/utils');
+var renderer = require('engine/renderer');
 var config = require('game/config').default;
 
 /**
@@ -150,6 +151,16 @@ Scene.prototype.pause = function pause() {};
  */
 Scene.prototype.resume = function resume() {};
 
+/**
+ * Create a new layer
+ * @param {string} name      Name of this layer
+ * @param {string} [parent]  Key of parent layer, default is `stage`.
+ */
+Scene.prototype.createLayer = function createLayer(name, parent) {
+  renderer.createLayer(this, name, parent);
+  return this;
+};
+
 Object.assign(Scene, {
   /**
    * Sub-systems.
@@ -189,10 +200,10 @@ Object.assign(Scene.prototype, {
    * @method spawnActor
    * @memberOf Scene#
    * @param  {Actor} actor      Actor class
-   * @param  {number} x
-   * @param  {number} y
-   * @param  {string} layerName Name of the layer to add to(key of a PIXI.Container instance in this scene)
-   * @param  {object} settings  Custom settings
+   * @param  {number} [x]
+   * @param  {number} [y]
+   * @param  {string} [layerName] Name of the layer to add to(key of a PIXI.Container instance in this scene)
+   * @param  {object} [settings]  Custom settings
    * @param  {string} [settings.name] Name of this actor
    * @param  {string} [settings.tag]  Tag of this actor
    * @return {Actor}            Actor instance
@@ -200,15 +211,32 @@ Object.assign(Scene.prototype, {
   spawnActor: function spawnActor(actor, x, y, layerName, settings) {
     var settings_ = settings || {};
 
-    if (!this[layerName]) {
-      console.log('Layer ' + layerName + ' does not exist!');
-      return null;
+    var layerName_ = layerName;
+    if (!this[layerName_]) {
+      layerName_ = 'stage';
     }
 
-    var a = new actor(settings_).addTo(this, this[layerName]);
-    a.position.set(x, y);
+    // Create instance
+    var a;
+    if (actor.canBePooled) {
+      a = actor.create(settings_);
+    }
+    else {
+      a = new actor(settings_);
+    }
+    a.CTOR = actor;
+
+    // Add actor components
+    a.scene = this;
+    a.layer = this[layerName_];
+    a.sprite && a.layer.addChild(a.sprite);
+    a.body && this.world.addBody(a.body);
+    a.position.set(x || 0, y || 0);
+
+    // Add to actor system
     this.addActor(a, settings_.tag);
 
+    // Keep a reference if it has a name
     if (settings_.name) {
       a.name = settings_.name;
       this.actorSystem.namedActors[settings_.name] = a;
@@ -241,6 +269,8 @@ Object.assign(Scene.prototype, {
       actor.removed = false;
       this.actorSystem.actors[t].push(actor);
     }
+
+    actor.ready();
   },
 
   /**
@@ -325,6 +355,7 @@ Scene.registerSystem('Actor', {
         }
 
         if (actor.removed) {
+          actor.CTOR.canBePooled && actor.CTOR.recycle(actor);
           utils.removeItems(actors, i--, 1);
         }
       }
@@ -341,6 +372,7 @@ Scene.registerSystem('Actor', {
         actor = actors[i];
 
         if (actor.removed) {
+          actor.CTOR.canBePooled && actor.CTOR.recycle(actor);
           utils.removeItems(actors, i--, 1);
         }
       }

@@ -52,6 +52,7 @@ function boot() {
   }, config.renderer);
 
   core.view = document.getElementById(rendererConfig.canvasId);
+  core.containerView = document.getElementById('container');
 
   // Keep focus when mouse/touch event occurs on the canvas
   function focus() { window.focus() }
@@ -77,9 +78,6 @@ function boot() {
       break;
     case 'scale-outer':
       resizeFunc = _scaleOuterResize;
-      break;
-    case 'never':
-      resizeFunc = _neverResize;
       break;
     default:
       resizeFunc = _letterBoxResize;
@@ -162,7 +160,7 @@ function boot() {
     div.style.margin = 'auto';
     div.style.display = 'none';
     div.style.color = config.rotatePromptFontColor || 'black';
-    div.id = 'lp-rotate';
+    div.className = 'center';
     core.rotatePromptElm = div;
     document.body.appendChild(div);
 
@@ -194,7 +192,7 @@ function boot() {
       }
 
       // Hide game view
-      core.view.style.display = core.rotatePromptVisible ? 'none' : 'block';
+      core.view.style.display = core.rotatePromptVisible ? 'none' : 'inline-block';
       // Show rotate view
       core.rotatePromptElm.style.backgroundColor = config.rotatePromptBGColor || 'black';
       core.rotatePromptElm.style.display = core.rotatePromptVisible ? '-webkit-box' : 'none';
@@ -251,15 +249,6 @@ function chooseProperResolution(res) {
 function resizeRotatePrompt() {
   _fullWindowStyle(core.rotatePromptElm);
   _alignToWindowCenter(core.rotatePromptElm, window.innerWidth, window.innerHeight);
-
-  // if (core.rotatePromptElm.image) {
-  //   if (window.innerHeight < core.rotatePromptElm.image.height) {
-  //     core.rotatePromptElm.image.style.height = window.innerHeight + 'px';
-  //     core.rotatePromptElm.image.style.width = 'auto';
-  //     core.rotatePromptElm.style.height = window.innerHeight + 'px';
-  //     core.rotatePromptElm.style.bottom = 'auto';
-  //   }
-  // }
 }
 
 // Update (fixed update implementation from Phaser by @photonstorm)
@@ -388,6 +377,13 @@ Object.assign(core, {
    * @type {HTMLCanvasElement}
    */
   view: null,
+
+  /**
+   * Div that contains game canvas.
+   * @memberof module:engine/core
+   * @type {HTMLCanvasElement}
+   */
+  containerView: null,
 
   /**
    * Size of game content.
@@ -670,7 +666,7 @@ function _letterBoxResize(first) {
   windowSize.y = window.innerHeight;
 
   // Use inner box scaling function to calculate correct size
-  result = resize.innerBoxResize(windowSize, core.viewSize);
+  result = resize.outerBoxResize(windowSize, core.viewSize);
 
   // Resize the renderer once
   first && Renderer.resize(core.viewSize.x, core.viewSize.y);
@@ -678,6 +674,8 @@ function _letterBoxResize(first) {
   // Resize the view
   core.view.style.width = (core.viewSize.x * result.scale) + 'px';
   core.view.style.height = (core.viewSize.y * result.scale) + 'px';
+  core.containerView.style.width = windowSize.x + 'px';
+  core.containerView.style.height = windowSize.y + 'px';
 
   _alignToWindowCenter(core.view, core.viewSize.x * result.scale, core.viewSize.y * result.scale);
 
@@ -690,8 +688,6 @@ function _cropResize() {
 
   // Resize the renderer
   Renderer.resize(core.viewSize.x, core.viewSize.y);
-
-  _fullWindowStyle(core.view);
 
   // Broadcast resize events
   core.emit('resize', core.viewSize.x, core.viewSize.y);
@@ -711,8 +707,6 @@ function _scaleInnerResize() {
     container.position.set(result.left, result.top);
   }
 
-  _fullWindowStyle(core.view);
-
   // Broadcast resize events
   core.emit('resize', core.viewSize.x, core.viewSize.y);
 }
@@ -731,12 +725,9 @@ function _scaleOuterResize() {
     container.position.set(result.left, result.top);
   }
 
-  _fullWindowStyle(core.view);
-
   // Broadcast resize events
   core.emit('resize', core.viewSize.x, core.viewSize.y);
 }
-function _neverResize() {}
 
 // CSS helpers
 function _alignToWindowCenter(el, w, h) {
@@ -746,13 +737,8 @@ function _alignToWindowCenter(el, w, h) {
   el.style.margin = '-' + Math.floor(h / 2) + 'px 0 0 -' + Math.floor(w / 2) + 'px';
 }
 function _fullWindowStyle(el) {
-  el.style.position = 'absolute';
-  el.style.left = '0';
-  el.style.top = '0';
-  el.style.right = '0';
-  el.style.bottom = '0';
-  el.style.width = '100%';
-  el.style.height = '100%';
+  el.style.width = window.innerWidth + 'px';
+  el.style.height = window.innerHeight + 'px';
 }
 function _noPageScroll() {
   document.ontouchmove = function(event) {

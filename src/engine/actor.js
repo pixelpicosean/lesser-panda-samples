@@ -13,10 +13,13 @@ var DEFAULT_POLYGON_VERTICES = [
 ];
 
 function textureFrom(data) {
-  if (data instanceof PIXI.Texture) {
+  if (!data) {
+    return undefined;
+  }
+  else if (data instanceof PIXI.Texture) {
     return data;
   }
-  else if (data.texture instanceof PIXI.Texture) {
+  else if (data.texture && data.texture instanceof PIXI.Texture) {
     return data.texture;
   }
   else {
@@ -154,11 +157,18 @@ function Actor(name) {
    * @private
    */
   this._rotation = 0;
+
+  /**
+   * Reference to constructor
+   * @type {function}
+   */
+  this.CTOR = Actor;
 }
 Actor.prototype = Object.create(EventEmitter.prototype);
 Actor.prototype.constructor = Actor;
 
 Actor.uid = 0;
+Actor.canBePooled = false;
 
 /**
  * Rotation
@@ -182,36 +192,11 @@ Object.defineProperty(Actor.prototype, 'rotation', {
 });
 
 /**
- * Add to the scene and a container
- * @method addTo
- * @memberof Actor#
- * @param {Scene} scene
- * @param {PIXI.Container} layer
- * @return {Actor} Actor itself for chaining
- */
-Actor.prototype.addTo = function addTo(scene, layer) {
-  this.scene = scene;
-  this.layer = layer;
-
-  if (this.sprite) {
-    this.layer.addChild(this.sprite);
-  }
-  if (this.body) {
-    this.scene.world.addBody(this.body);
-  }
-
-  this.prepare();
-
-  return this;
-};
-
-/**
- * Will be called by `addTo` method after the Actor components are
- * properly added.
- * @method prepare
+ * Will be called after the Actor is properly added to a scene.
+ * @method ready
  * @memberof Actor#
  */
-Actor.prototype.prepare = function prepare() {};
+Actor.prototype.ready = function ready() {};
 
 /**
  * Update method to be called each frame
@@ -228,14 +213,14 @@ Actor.prototype.update = function update(dtMS, dtSec) {};
  * @memberof Actor#
  */
 Actor.prototype.remove = function remove() {
-  this.removed = true;
-
   if (this.sprite) {
     this.sprite.remove();
   }
   if (this.body) {
     this.body.remove();
   }
+
+  this.scene && this.scene.removeActor(this);
 
   this.scene = null;
   this.layer = null;
@@ -438,7 +423,7 @@ Actor.prototype.addGraphics = function addGraphics(settings, parentNode, key, re
  * @param settings.anims {array<{ name, frames, settings }>}
  * @return {Actor}  self for chaining
  */
-Actor.prototype.initAnimatedSprite = function initAnimatedSprite(settings_) {
+Actor.prototype.initAnimatedSprite = function initAnimatedSprite(settings) {
   this.addAnimatedSprite(settings, null, 'sprite');
   this.sprite.position = this.position;
 
@@ -468,7 +453,7 @@ Actor.prototype.addAnimatedSprite = function addAnimatedSprite(settings, parentN
   var anims = settings_.anims;
   if (Array.isArray(anims)) {
     for (var i = 0; i < anims.length; i++) {
-      this.sprite.addAnim(anims[i].name, anims[i].frames, anims[i].settings);
+      inst.addAnim(anims[i].name, anims[i].frames, anims[i].settings);
     }
   }
 
@@ -833,6 +818,7 @@ Actor.prototype.behave = function behave(behv, settings) {
   // Setup
   behavior.addTo(this);
   behavior.setup(settings || {});
+  behavior.activate();
 
   return this;
 };
@@ -892,7 +878,7 @@ Actor.prototype.updateBehaviors = function updateBehaviors(dtMS, dtSec) {
   var i, behv;
   for (i = 0; i < this.behaviorList.length; i++) {
     behv = this.behaviorList[i];
-    behv.update && behv.update(dtMS, dtSec);
+    behv.isActive && behv.update && behv.update(dtMS, dtSec);
   }
 };
 
@@ -930,6 +916,7 @@ function setupInst(obj, settings) {
       case 'visible':
       case 'x':
       case 'y':
+      case 'interactive':
       // - Sprite
       case 'tint':
       // - Graphics
@@ -950,7 +937,8 @@ function setupInst(obj, settings) {
       // - TilingSprite
       case 'tilePosition':
       case 'tileScale':
-        obj[k].copy(settings[k]);
+        obj[k].x = settings[k].x || 0;
+        obj[k].y = settings[k].y || 0;
         break;
 
       // Set blend mode
