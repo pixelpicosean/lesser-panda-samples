@@ -12,6 +12,8 @@ export const GROUPS = {
 loader.addAsset('asteroids.json', 'asteroids');
 loader.addAsset('tileset.png', 'tileset');
 loader.addAsset('room.json', 'map');
+loader.addAsset('tank-base.png', 'tank-base');
+loader.addAsset('tank-cannon.png', 'tank-cannon');
 
 // Load bitmap fonts
 loader.addAsset('KenPixel.fnt');

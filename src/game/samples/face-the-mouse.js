@@ -5,16 +5,24 @@ import Actor from 'engine/actor';
 
 import FaceTheMouse from 'behaviors/face-the-mouse';
 
-import { TEXTURES } from 'game/data';
+import 'game/data';
 
-class FaceTheMouseScene extends Scene {
+class FaceTheMouseSample extends Scene {
   constructor() {
     super();
 
-    this.spawnActor(Actor, engine.width * 0.5, engine.height * 0.5, 'stage')
-      .initSprite({ texture: ['asteroids', 'shield'], scale: { x: 4, y: 4 } })
+    let base = this.spawnActor(Actor, engine.width * 0.5, engine.height * 0.5, 'stage')
+      .initSprite({
+        texture: 'tank-base',
+      });
+
+    let cannon = this.spawnActor(Actor, engine.width * 0.5, engine.height * 0.5, 'stage')
+      .initSprite({
+        texture: 'tank-cannon',
+        anchor: { x: 0.36, y: 0.5 },
+      })
       .behave(FaceTheMouse);
   }
 }
 
-engine.addScene('FaceTheMouse', FaceTheMouseScene);
+engine.addScene('FaceTheMouseSample', FaceTheMouseSample);
