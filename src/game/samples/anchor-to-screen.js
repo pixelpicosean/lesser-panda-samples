@@ -5,36 +5,47 @@ import Actor from 'engine/actor';
 
 import AnchorToScreen from 'behaviors/anchor-to-screen';
 
-import { TEXTURES } from 'game/data';
+import 'game/data';
 
-class AnchorToScreenScene extends Scene {
+class AnchorToScreenSample extends Scene {
   constructor() {
     super();
 
     const leftTop = this.spawnActor(Actor, 0, 0, 'stage')
-      .initSprite(TEXTURES['asteroids']['shield'])
+      .initSprite({
+        texture: ['asteroids', 'shield'],
+        anchor: { x: 0.5, y: 0.5 },
+      })
       .behave(AnchorToScreen, {
         left: '20%',
-        right: '60%',
         top: '20%',
       });
 
     const rightTop = this.spawnActor(Actor, 0, 0, 'stage')
-      .initSprite(TEXTURES['asteroids']['power'])
+      .initSprite({
+        texture: ['asteroids', 'power'],
+        anchor: { x: 0.5, y: 0.5 },
+      })
       .behave(AnchorToScreen, {
         right: '20%',
         top: '20%',
       });
 
     const leftBottom = this.spawnActor(Actor, 0, 0, 'stage')
-      .initSprite(TEXTURES['asteroids']['power'])
+      .initSprite({
+        texture: ['asteroids', 'power'],
+        anchor: { x: 0.5, y: 0.5 },
+      })
       .behave(AnchorToScreen, {
         left: '20%',
         bottom: '20%',
       });
 
     const rightBottom = this.spawnActor(Actor, 0, 0, 'stage')
-      .initSprite(TEXTURES['asteroids']['shield'])
+      .initSprite({
+        texture: ['asteroids', 'shield'],
+        anchor: { x: 0.5, y: 0.5 },
+      })
       .behave(AnchorToScreen, {
         right: '20%',
         bottom: '20%',
@@ -42,4 +53,4 @@ class AnchorToScreenScene extends Scene {
   }
 }
 
-engine.addScene('AnchorToScreen', AnchorToScreenScene);
+engine.addScene('AnchorToScreenSample', AnchorToScreenSample);

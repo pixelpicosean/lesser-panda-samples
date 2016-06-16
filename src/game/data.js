@@ -16,16 +16,3 @@ loader.addAsset('room.json', 'map');
 // Load bitmap fonts
 loader.addAsset('KenPixel.fnt');
 loader.addAsset('04b03.fnt');
-
-// Load audio files
-
-export const TEXTURES = {};
-export let MAP;
-loader.once('complete', () => {
-
-  TEXTURES['asteroids'] = loader.resources['asteroids'].textures;
-  TEXTURES['tileset'] = loader.resources['tileset'].texture;
-
-  MAP = loader.resources['map'].data;
-
-});
