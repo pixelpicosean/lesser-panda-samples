@@ -7,13 +7,16 @@ import WrapAroundScreen from 'behaviors/wrap-around-screen';
 
 import { TEXTURES } from 'game/data';
 
-class Asteroids extends Scene {
+class AsteroidsSample extends Scene {
   constructor() {
     super();
 
     // Create a ship actor
     const ship = this.spawnActor(Actor, engine.width * 0.5, engine.height * 0.5, 'stage')
-      .initSprite(TEXTURES['asteroids']['ship-blue'])
+      .initSprite({
+        texture: ['asteroids', 'ship-blue'],
+        anchor: { x: 0.5, y: 0.5 },
+      })
       .initBody()
       // Give the ship ability to move
       .behave(AsteroidsMove, {
@@ -21,9 +24,8 @@ class Asteroids extends Scene {
         backwardKey: 'S',
         leftKey: 'A',
         rightKey: 'D',
-        forwardForce: 40,
-        forwardForce: 30,
-        torque: 2,
+        forwardForce: 50,
+        torque: 4,
       })
       // Make the ship able to wrap around screen
       .behave(WrapAroundScreen);
@@ -34,4 +36,4 @@ class Asteroids extends Scene {
   }
 }
 
-engine.addScene('Asteroids', Asteroids);
+engine.addScene('AsteroidsSample', AsteroidsSample);
