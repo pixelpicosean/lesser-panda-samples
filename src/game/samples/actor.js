@@ -29,7 +29,7 @@ class ActorSample extends Scene {
     super();
 
     // Simply spawn an Actor with by calling component initialize methods
-    let box1 = this.spawnActor(Actor, 100, 160, 'stage')
+    let box1 = this.spawnActor(Actor, 160, 120, 'stage')
       .initGraphics({
         shape: 'Box',
         width: 64,
@@ -40,8 +40,8 @@ class ActorSample extends Scene {
         collisionGroup: GROUPS.SOLID,
       });
 
-    let box2 = this.spawnActor(MyActor, 100, 100, 'stage');
+    let box2 = this.spawnActor(MyActor, 160, 20, 'stage');
   }
 }
 
-engine.addScene('Actor', ActorSample);
+engine.addScene('ActorSample', ActorSample);
