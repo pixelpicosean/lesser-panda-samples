@@ -3,51 +3,61 @@ import PIXI from 'engine/pixi';
 import Scene from 'engine/scene';
 import Tilemap from 'engine/tilemap';
 import keyboard from 'engine/keyboard';
+import loader from 'engine/loader';
 
 import Actor from 'engine/actor';
 
-import { TEXTURES, MAP, GROUPS } from 'game/data';
+import { GROUPS } from 'game/data';
 
 class TilemapSample extends Scene {
   awake() {
     this.backgroundColor = 0xaaaaaa;
 
-    this.bottomLayer = new PIXI.Container().addTo(this.stage);
-    this.topLayer = new PIXI.Container().addTo(this.stage);
+    this
+      .createLayer('bottomLayer', 'stage')
+      .createLayer('topLayer', 'stage');
 
     // Tileset table
     const tilesets = {
-      'tileset.png': TEXTURES['tileset'],
+      'pizza-boy.png': loader.getTexture('pizza-boy.png'),
     };
 
     // Create a tilemap from Tiled JSON map
-    const tilemap = Tilemap.fromTiledJson(MAP, tilesets, GROUPS.SOLID)
+    const tilemap = Tilemap.fromTiledJson(loader.resources['pizza-boy.json'].data, tilesets, GROUPS.SOLID)
       .addTo(this, this.bottomLayer);
 
     // Create a box that collides with the tilemap
-    const box = this.spawnActor(Actor, 16, 144, 'bottomLayer')
-      .initGraphics({ shape: 'Box', color: 0xfff4ed, width: 8 })
-      .initBody({ mass: 0.4, collisionGroup: GROUPS.BOX, collideAgainst: [GROUPS.SOLID] });
-    box.body.velocityLimit.set(200);
-    box.body.collide = function(other, res) {
-      if (other.collisionGroup === GROUPS.SOLID) {
-        if ((this.velocity.y < 0 && res.overlapN.y < 0) ||
-          this.velocity.y > 0 && res.overlapN.y > 0) {
-          this.velocity.y = 0;
-        }
-        return true;
-      }
-    };
-    this.box = box;
+    this.box = this.spawnActor(Actor, 40, 150, 'bottomLayer')
+      .initGraphics({
+        shape: 'Box',
+        color: 0xfff4ed,
+        width: 12,
+        height: 20,
+      })
+      .initBody({
+        mass: 0.4,
+        velocityLimit: { x: 200, y: 200 },
+        collisionGroup: GROUPS.BOX,
+        collideAgainst: [GROUPS.SOLID],
+        collide: function(other, res) {
+          if (other.collisionGroup === GROUPS.SOLID) {
+            if ((this.velocity.y < 0 && res.overlapN.y < 0) ||
+              this.velocity.y > 0 && res.overlapN.y > 0) {
+              this.velocity.y = 0;
+            }
+            return true;
+          }
+        },
+      });
 
     keyboard.on('keydown', (k) => {
       if (k === 'UP') {
-        box.body.velocity.y = -160;
+        this.box.body.velocity.y = -160;
       }
     });
 
     // Collision layer debug draw: edges and normals
-    this.drawBody(box.body, box.sprite);
+    this.drawBody(this.box.body, this.topLayer);
     for (let i = 0; i < tilemap.collisionLayer.bodies.length; i++) {
       this.drawBodyStatic(tilemap.collisionLayer.bodies[i], this.topLayer);
     }
@@ -73,15 +83,18 @@ class TilemapSample extends Scene {
       segGfx.lineStyle(lineWidth, 0xff2f62);
       segGfx.moveTo(p0.x, p0.y);
       segGfx.lineTo(p1.x, p1.y);
+      segGfx.position = body.position;
 
       let vecN = body.shape.normals[i].clone().multiply(4);
       let segNormalGfx = new PIXI.Graphics().addTo(parent);
       segNormalGfx.lineStyle(1, 0x00e56e);
       segNormalGfx.moveTo(0, 0);
       segNormalGfx.lineTo(vecN.x, vecN.y);
-      segNormalGfx.position
+      segNormalGfx.pivot
         .copy(p1).subtract(p0).multiply(0.5)
-        .add(p0);
+        .add(p0)
+        .multiply(-1);
+      segNormalGfx.position = body.position;
     }
   }
   drawBodyStatic(body, parent, lineWidth = 1) {
@@ -108,4 +121,4 @@ class TilemapSample extends Scene {
   }
 }
 
-engine.addScene('Tilemap', TilemapSample);
+engine.addScene('TilemapSample', TilemapSample);
