@@ -48,7 +48,7 @@ class Vehicle extends Actor {
   }
 }
 
-class SteeringScene extends Scene {
+class SteeringSample extends Scene {
   awake() {
     let a = this.spawnActor(Actor, 100, 100, 'stage')
       .initGraphics({
@@ -61,7 +61,7 @@ class SteeringScene extends Scene {
         color: 0xff0000,
       })
       .initBody({
-        velocityLimit: Vector.create(120, 120),
+        velocityLimit: { x: 120, y: 120 },
       })
       .behave(Steering, {
         maxSpeed: 120,
@@ -90,4 +90,4 @@ class SteeringScene extends Scene {
   }
 };
 
-core.addScene('Steering', SteeringScene);
+core.addScene('SteeringSample', SteeringSample);
