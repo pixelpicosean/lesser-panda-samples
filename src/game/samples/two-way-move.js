@@ -6,16 +6,16 @@ import Actor from 'engine/actor';
 import HorizontalMove from 'behaviors/horizontal-move';
 import VerticalMove from 'behaviors/vertical-move';
 
-import { TEXTURES } from 'game/data';
+import 'game/data';
 
-class TwoWayMove extends Scene {
+class TwoWayMoveSample extends Scene {
   constructor() {
     super();
 
-    const textures = TEXTURES['asteroids'];
-
     const vertical = this.spawnActor(Actor, 40, engine.height * 0.5, 'stage')
-      .initSprite(textures['power'])
+      .initSprite({
+        texture: ['asteroids', 'power'],
+      })
       .behave(VerticalMove, {
         range: 100,
         startPct: 0.5,
@@ -32,7 +32,9 @@ class TwoWayMove extends Scene {
     vertical.behaviors['VerticalMove'].moveDown();
 
     const horizontal = this.spawnActor(Actor, 100, engine.height * 0.5, 'stage')
-      .initSprite(textures['shield'])
+      .initSprite({
+        texture: ['asteroids', 'shield'],
+      })
       .behave(HorizontalMove, {
         range: 160,
         startPct: 0,
@@ -50,4 +52,4 @@ class TwoWayMove extends Scene {
   }
 }
 
-engine.addScene('TwoWayMove', TwoWayMove);
+engine.addScene('TwoWayMoveSample', TwoWayMoveSample);
