@@ -3,10 +3,11 @@ import PIXI from 'engine/pixi';
 import Scene from 'engine/scene';
 import device from 'engine/device';
 import Timer from 'engine/timer';
+import loader from 'engine/loader';
 
-import { TEXTURES } from 'game/data';
+import 'game/data';
 
-class TimerScene extends Scene {
+class TimerSample extends Scene {
   awake() {
     // Enable mouse/touch input
     this.stage.interactive = true;
@@ -21,7 +22,7 @@ class TimerScene extends Scene {
       font: '36px 04b03',
     }).addTo(this.stage);
 
-    this.asteroid = new PIXI.Sprite(TEXTURES['asteroids'].asteroid).addTo(this.stage);
+    this.asteroid = new PIXI.Sprite(loader.getTexture(['asteroids', 'asteroid'])).addTo(this.stage);
     this.asteroid.anchor.set(0.5);
     this.asteroid.position.set(0, engine.height * 0.5);
     this.asteroid.visible = false;
@@ -146,4 +147,4 @@ class TimerScene extends Scene {
   }
 }
 
-engine.addScene('Timer', TimerScene);
+engine.addScene('TimerSample', TimerSample);
