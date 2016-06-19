@@ -18,6 +18,7 @@ import 'game/samples/steering';
 import 'game/samples/tilemap';
 import 'game/samples/timer';
 import 'game/samples/two-way-move';
+import 'game/samples/tween';
 
 PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
 
