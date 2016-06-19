@@ -8,6 +8,7 @@ import PIXI from 'engine/pixi';
 import 'game/loading';
 
 // Scenes
+import 'game/samples/action';
 import 'game/samples/actor';
 import 'game/samples/anchor-to-screen';
 import 'game/samples/asteroids';
