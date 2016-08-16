@@ -87,7 +87,7 @@ class LevelSample extends Scene {
     });
 
     // Create a box that collides with the tilemap
-    this.box = this.actorSystem.namedActors['box'];
+    this.box = this.getActorByName('box');
 
     keyboard.on('keydown', (k) => {
       if (k === 'UP') {
