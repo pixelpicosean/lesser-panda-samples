@@ -94,12 +94,6 @@ class LevelSample extends Scene {
         this.box.body.velocity.y = -160;
       }
     });
-
-    // Collision layer debug draw: edges and normals
-    this.drawBody(this.box.body, this.topLayer);
-    for (let i = 0; i < this.collisionMap.bodies.length; i++) {
-      this.drawBodyStatic(this.collisionMap.bodies[i], this.topLayer);
-    }
   }
   update(_, dt) {
     if (keyboard.down('LEFT') && !keyboard.down('RIGHT')) {
@@ -110,52 +104,6 @@ class LevelSample extends Scene {
     }
     else {
       this.box.body.velocity.x = 0;
-    }
-  }
-
-  drawBody(body, parent, lineWidth = 1) {
-    for (let i = 0; i < body.shape.points.length; i++) {
-      let p0 = body.shape.points[i];
-      let p1 = p0.clone().add(body.shape.edges[i]);
-
-      let segGfx = new PIXI.Graphics().addTo(parent);
-      segGfx.lineStyle(lineWidth, 0xff2f62);
-      segGfx.moveTo(p0.x, p0.y);
-      segGfx.lineTo(p1.x, p1.y);
-      segGfx.position = body.position;
-
-      let vecN = body.shape.normals[i].clone().multiply(4);
-      let segNormalGfx = new PIXI.Graphics().addTo(parent);
-      segNormalGfx.lineStyle(1, 0x00e56e);
-      segNormalGfx.moveTo(0, 0);
-      segNormalGfx.lineTo(vecN.x, vecN.y);
-      segNormalGfx.pivot
-        .copy(p1).subtract(p0).multiply(0.5)
-        .add(p0)
-        .multiply(-1);
-      segNormalGfx.position = body.position;
-    }
-  }
-  drawBodyStatic(body, parent, lineWidth = 1) {
-    for (let i = 0; i < body.shape.points.length; i++) {
-      let p0 = body.shape.points[i];
-      let p1 = p0.clone().add(body.shape.edges[i]);
-
-      let segGfx = new PIXI.Graphics().addTo(parent);
-      segGfx.lineStyle(lineWidth, 0xff2f62);
-      segGfx.moveTo(p0.x, p0.y);
-      segGfx.lineTo(p1.x, p1.y);
-      segGfx.position.add(body.position);
-
-      let vecN = body.shape.normals[i].clone().multiply(4);
-      let segNormalGfx = new PIXI.Graphics().addTo(parent);
-      segNormalGfx.lineStyle(1, 0x00e56e);
-      segNormalGfx.moveTo(0, 0);
-      segNormalGfx.lineTo(vecN.x, vecN.y);
-      segNormalGfx.position
-        .copy(p1).subtract(p0).multiply(0.5)
-        .add(p0)
-        .add(body.position);
     }
   }
 }
