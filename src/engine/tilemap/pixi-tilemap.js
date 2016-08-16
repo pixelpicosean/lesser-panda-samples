@@ -1,6 +1,6 @@
 /**
  * PIXI-tilemap made by Ivan Popelyshev
- * @version master/5276fa4
+ * Modified and fixed by Sean Bohan
  */
 var PIXI = require('engine/pixi');
 
