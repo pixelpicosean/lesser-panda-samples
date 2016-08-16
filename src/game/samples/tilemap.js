@@ -1,13 +1,20 @@
 import engine from 'engine/core';
 import PIXI from 'engine/pixi';
 import Scene from 'engine/scene';
-import Tilemap from 'engine/tilemap';
+import BackgroundMap from 'engine/tilemap/background-map';
+import CollisionMap from 'engine/tilemap/collision-map';
+import { lift } from 'engine/tilemap/utils';
 import keyboard from 'engine/keyboard';
 import loader from 'engine/loader';
 
 import Actor from 'engine/actor';
 
 import { GROUPS } from 'game/data';
+
+const LAYER_1 = [86, 86, 86, 86, 86, 86, 86, 86, 86, 86, 86, 86, 86, 86, 86, 86, 86, 86, 86, 86, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 6, 7, 0, 0, 0, 0, 0, 65, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 25, 26, 27, 0, 0, 0, 0, 0, 65, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 67, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65];
+const LAYER_2 = [31, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 31, 32, 51, 52, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 51, 52, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 71, 72, 73, 74, 75, 74, 74, 74, 74, 76, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 91, 92, 154, 154, 95, 154, 154, 154, 154, 96, 71, 72, 73, 74, 75, 74, 73, 73, 74, 76, 151, 154, 154, 130, 150, 154, 154, 154, 154, 156, 91, 92, 93, 94, 95, 154, 154, 112, 154, 156];
+
+const COLLISION = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 class TilemapSample extends Scene {
   awake() {
@@ -17,17 +24,13 @@ class TilemapSample extends Scene {
       .createLayer('bottomLayer', 'stage')
       .createLayer('topLayer', 'stage');
 
-    // Tileset table
-    const tilesets = {
-      'pizza-boy.png': loader.getTexture('pizza-boy.png'),
-    };
+    new BackgroundMap(16, lift(LAYER_1, 20, 13), loader.getTexture('pizza-boy.png')).addTo(this.bottomLayer);
+    new BackgroundMap(16, lift(LAYER_2, 20, 13), loader.getTexture('pizza-boy.png')).addTo(this.bottomLayer);
 
-    // Create a tilemap from Tiled JSON map
-    const tilemap = Tilemap.fromTiledJson(loader.resources['pizza-boy.json'].data, tilesets, GROUPS.SOLID)
-      .addTo(this, this.bottomLayer);
+    const collisionMap = new CollisionMap(16, lift(COLLISION, 20, 13), GROUPS.SOLID).addTo(this);
 
     // Create a box that collides with the tilemap
-    this.box = this.spawnActor(Actor, 40, 150, 'bottomLayer')
+    this.box = this.spawnActor(Actor, 40, 120, 'bottomLayer')
       .initGraphics({
         shape: 'Box',
         color: 0xfff4ed,
@@ -56,10 +59,10 @@ class TilemapSample extends Scene {
       }
     });
 
-    // Collision layer debug draw: edges and normals
+    // Collision map debug draw: edges and normals
     this.drawBody(this.box.body, this.topLayer);
-    for (let i = 0; i < tilemap.collisionLayer.bodies.length; i++) {
-      this.drawBodyStatic(tilemap.collisionLayer.bodies[i], this.topLayer);
+    for (let i = 0; i < collisionMap.bodies.length; i++) {
+      this.drawBodyStatic(collisionMap.bodies[i], this.topLayer);
     }
   }
   update(_, dt) {
