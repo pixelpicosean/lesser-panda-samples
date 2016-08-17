@@ -5,13 +5,13 @@ import BackgroundMap from 'engine/tilemap/background-map';
 import CollisionMap from 'engine/tilemap/collision-map';
 import keyboard from 'engine/keyboard';
 import loader from 'engine/loader';
-import 'engine/level';
+import tiledToMap from 'engine/level/tiled-to-map';
 
 import Actor from 'engine/actor';
 
 import { GROUPS } from 'game/data';
 
-class Box extends Actor {
+class Hero extends Actor {
   constructor() {
     super();
 
@@ -38,9 +38,9 @@ class Box extends Actor {
     });
   }
 }
-Actor.register('Box', Box);
+Actor.register('Hero', Hero);
 
-class LevelSample extends Scene {
+class TiledLevelSample extends Scene {
   awake() {
     this.backgroundColor = 0xaaaaaa;
 
@@ -48,63 +48,35 @@ class LevelSample extends Scene {
       .createLayer('bottomLayer', 'stage')
       .createLayer('topLayer', 'stage');
 
-    this.loadLevel([
-      {
-        type: 'tile',
-        tilesize: 16,
-        tileset: 'pizza-boy.png',
-        data: [
-          [45,46,46,46,46,46,46,47],
-          [ 0, 0, 0, 0, 0, 0, 0, 0],
-          [ 0, 0, 0, 0, 0, 0, 0, 0],
-          [ 0, 0, 0, 0, 0, 0, 0, 0],
-          [45,46,46,46,46,46,46,47],
-        ],
-        parent: 'bottomLayer',
-      },
-      {
-        type: 'collision',
-        tilesize: 16,
-        data: [
-          [1,1,1,1,1,1,1,1],
-          [1,0,0,0,0,0,0,1],
-          [1,0,0,0,0,0,0,1],
-          [1,0,0,0,0,0,0,1],
-          [1,1,1,1,1,1,1,1],
-        ],
-      },
-      {
-        type: 'actor',
-        container: 'bottomLayer',
-        actors: [
-          ['Box', 40, 40, { name: 'box' }],
-        ],
-      },
-    ], {
+    // Convert Tiled JSON into LesserPanda level format
+    let mapData = tiledToMap(loader.resources['pizza-boy.json'].data);
+
+    // Load the converted map
+    this.loadLevel(mapData, {
       collisionGroup: GROUPS.SOLID,
       container: 'bottomLayer',
     });
 
-    // Create a box that collides with the tilemap
-    this.box = this.getActorByName('box');
+    // Get the hero instance
+    this.hero = this.getActorByName('hero');
 
     keyboard.on('keydown', (k) => {
       if (k === 'UP') {
-        this.box.body.velocity.y = -160;
+        this.hero.body.velocity.y = -160;
       }
     });
   }
   update(_, dt) {
     if (keyboard.down('LEFT') && !keyboard.down('RIGHT')) {
-      this.box.body.velocity.x = -80;
+      this.hero.body.velocity.x = -80;
     }
     else if (!keyboard.down('LEFT') && keyboard.down('RIGHT')) {
-      this.box.body.velocity.x = 80;
+      this.hero.body.velocity.x = 80;
     }
     else {
-      this.box.body.velocity.x = 0;
+      this.hero.body.velocity.x = 0;
     }
   }
 }
 
-engine.addScene('LevelSample', LevelSample);
+engine.addScene('TiledLevelSample', TiledLevelSample);

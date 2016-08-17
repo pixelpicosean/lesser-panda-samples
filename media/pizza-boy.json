@@ -7,11 +7,11 @@
          "opacity":1,
          "properties":
             {
-             "tileset":"pizza-boy.png"
+             "parent":"bottomLayer"
             },
          "propertytypes":
             {
-             "tileset":"string"
+             "parent":"string"
             },
          "type":"tilelayer",
          "visible":true,
@@ -26,11 +26,11 @@
          "opacity":1,
          "properties":
             {
-             "tileset":"pizza-boy.png"
+             "parent":"bottomLayer"
             },
          "propertytypes":
             {
-             "tileset":"string"
+             "parent":"string"
             },
          "type":"tilelayer",
          "visible":true,
@@ -48,8 +48,31 @@
          "width":20,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "height":13,
+         "name":"bottomLayer",
+         "objects":[
+                {
+                 "height":20,
+                 "id":1,
+                 "name":"hero",
+                 "rotation":0,
+                 "type":"Hero",
+                 "visible":true,
+                 "width":12,
+                 "x":64,
+                 "y":128
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "width":20,
+         "x":0,
+         "y":0
         }],
- "nextobjectid":1,
+ "nextobjectid":2,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":16,

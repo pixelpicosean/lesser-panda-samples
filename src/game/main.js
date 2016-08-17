@@ -19,6 +19,7 @@ import 'game/samples/steering';
 import 'game/samples/tilemap';
 import 'game/samples/tilemap-collision';
 import 'game/samples/level';
+import 'game/samples/tiled-level';
 import 'game/samples/timer';
 import 'game/samples/two-way-move';
 import 'game/samples/tween';
@@ -27,7 +28,7 @@ PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
 
 class Main extends Scene {
   awake() {
-    engine.setScene('TilemapSample');
+    engine.setScene('TiledLevelSample');
   }
 };
 engine.addScene('Main', Main);
