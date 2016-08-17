@@ -49,7 +49,7 @@ class TiledLevelSample extends Scene {
       .createLayer('topLayer', 'stage');
 
     // Convert Tiled JSON into LesserPanda level format
-    let mapData = tiledToMap(loader.resources['pizza-boy.json'].data);
+    let mapData = tiledToMap('pizza-boy.json');
 
     // Load the converted map
     this.loadLevel(mapData, {
