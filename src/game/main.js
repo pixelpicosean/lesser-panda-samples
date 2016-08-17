@@ -28,7 +28,7 @@ PIXI.SCALE_MODES.DEFAULT = PIXI.SCALE_MODES.NEAREST;
 
 class Main extends Scene {
   awake() {
-    engine.setScene('TilemapSample');
+    engine.setScene('TiledLevelSample');
   }
 };
 engine.addScene('Main', Main);
