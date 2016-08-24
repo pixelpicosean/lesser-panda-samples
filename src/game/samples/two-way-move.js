@@ -16,39 +16,39 @@ class TwoWayMoveSample extends Scene {
       .initSprite({
         texture: ['asteroids', 'power'],
       })
-      .behave(VerticalMove, {
+      .behave(VerticalMove, 'bVerticalMove', {
         range: 100,
         startPct: 0.5,
         useKeyboard: false,
       })
       .on('reachStart', function() {
-        this.behaviors['VerticalMove'].moveDown();
+        this.bVerticalMove.moveDown();
       })
       .on('reachEnd', function() {
-        this.behaviors['VerticalMove'].moveUp();
+        this.bVerticalMove.moveUp();
       });;
     vertical.sprite.scale.set(3);
 
-    vertical.behaviors['VerticalMove'].moveDown();
+    vertical.bVerticalMove.moveDown();
 
     const horizontal = this.spawnActor(Actor, 100, engine.height * 0.5, 'stage')
       .initSprite({
         texture: ['asteroids', 'shield'],
       })
-      .behave(HorizontalMove, {
+      .behave(HorizontalMove, 'bHorizontalMove', {
         range: 160,
         startPct: 0,
         useKeyboard: false,
       })
       .on('reachStart', function() {
-        this.behaviors['HorizontalMove'].moveRight();
+        this.bHorizontalMove.moveRight();
       })
       .on('reachEnd', function() {
-        this.behaviors['HorizontalMove'].moveLeft();
+        this.bHorizontalMove.moveLeft();
       });;
     horizontal.sprite.scale.set(3);
 
-    horizontal.behaviors['HorizontalMove'].moveRight();
+    horizontal.bHorizontalMove.moveRight();
   }
 }
 
