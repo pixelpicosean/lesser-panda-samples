@@ -19,7 +19,7 @@ class AsteroidsSample extends Scene {
       })
       .initBody()
       // Give the ship ability to move
-      .behave(AsteroidsMove, {
+      .behave(AsteroidsMove, 'bAsteroidsMove', {
         forwardKey: 'W',
         backwardKey: 'S',
         leftKey: 'A',
@@ -28,7 +28,7 @@ class AsteroidsSample extends Scene {
         torque: 4,
       })
       // Make the ship able to wrap around screen
-      .behave(WrapAroundScreen);
+      .behave(WrapAroundScreen, 'bWrapAroundScreen');
 
     // TODO: Make the ship able to shoot bullets
 

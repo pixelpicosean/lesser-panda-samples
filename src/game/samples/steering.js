@@ -29,15 +29,15 @@ class Vehicle extends Actor {
 
     this.initBody();
 
-    this.behave(Steering, {
+    this.behave(Steering, 'bSteering', {
         maxSpeed: rnd.between(80, 120)
       })
-      .behave(WrapAroundScreen, {});
+      .behave(WrapAroundScreen, 'bWrapAroundScreen');
   }
   prepare() {}
   update() {
     // Steering
-    let force = this.behaviors.Steering.pursuit(this.target);
+    let force = this.bSteering.pursuit(this.target);
     this.body.force.copy(force);
     Vector.recycle(force);
 
@@ -63,13 +63,13 @@ class SteeringSample extends Scene {
       .initBody({
         velocityLimit: { x: 120, y: 120 },
       })
-      .behave(Steering, {
+      .behave(Steering, 'bSteering', {
         maxSpeed: 120,
       })
       .behave(WrapAroundScreen, {});
     a.canEverTick = true;
     a.update = function() {
-      let force = this.behaviors.Steering.wander();
+      let force = this.bSteering.wander();
       this.body.force.copy(force);
       Vector.recycle(force);
 

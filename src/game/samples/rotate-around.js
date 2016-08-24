@@ -1,5 +1,6 @@
 import engine from 'engine/core';
 import Scene from 'engine/scene';
+import Vector from 'engine/vector';
 
 import Actor from 'engine/actor';
 
@@ -16,8 +17,8 @@ class RotateAroundSample extends Scene {
         texture: ['asteroids', 'shield'],
         scale: { x: 2, y: 2 },
       })
-      .behave(RotateAroundPoint, {
-        center: { x: engine.width * 0.5, y: engine.height * 0.5 },
+      .behave(RotateAroundPoint, 'bRotateAroundPoint', {
+        center: Vector.create(engine.width * 0.5, engine.height * 0.5),
       });
   }
 }
