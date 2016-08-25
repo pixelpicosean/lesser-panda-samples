@@ -29,10 +29,10 @@ class Vehicle extends Actor {
 
     this.initBody();
 
-    this.behave(Steering, 'bSteering', {
+    this.behave(Steering, {
         maxSpeed: rnd.between(80, 120)
       })
-      .behave(WrapAroundScreen, 'bWrapAroundScreen');
+      .behave(WrapAroundScreen);
   }
   prepare() {}
   update() {
@@ -63,10 +63,10 @@ class SteeringSample extends Scene {
       .initBody({
         velocityLimit: { x: 120, y: 120 },
       })
-      .behave(Steering, 'bSteering', {
+      .behave(Steering, {
         maxSpeed: 120,
       })
-      .behave(WrapAroundScreen, {});
+      .behave(WrapAroundScreen);
     a.canEverTick = true;
     a.update = function() {
       let force = this.bSteering.wander();

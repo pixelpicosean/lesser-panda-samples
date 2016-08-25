@@ -17,7 +17,7 @@ class RotateAroundSample extends Scene {
         texture: ['asteroids', 'shield'],
         scale: { x: 2, y: 2 },
       })
-      .behave(RotateAroundPoint, 'bRotateAroundPoint', {
+      .behave(RotateAroundPoint, {
         center: Vector.create(engine.width * 0.5, engine.height * 0.5),
       });
   }

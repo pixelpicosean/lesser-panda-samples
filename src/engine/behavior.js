@@ -15,12 +15,12 @@ function Behavior() {
    * Target Actor instance
    * @type {Actor}
    */
-  this.target = null;
+  this.actor = null;
 };
 Behavior.TYPE = 'Behavior';
 
 /**
- * Initialization
+ * Called once when the behavior is added to an actor.
  * @memberof Behavior#
  * @method awake
  */

@@ -21,7 +21,7 @@ class FaceTheMouseSample extends Scene {
         texture: 'tank-cannon',
         anchor: { x: 0.36, y: 0.5 },
       })
-      .behave(FaceTheMouse, 'bFaceTheMouse');
+      .behave(FaceTheMouse);
   }
 }
 

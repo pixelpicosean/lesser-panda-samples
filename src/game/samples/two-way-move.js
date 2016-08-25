@@ -16,7 +16,7 @@ class TwoWayMoveSample extends Scene {
       .initSprite({
         texture: ['asteroids', 'power'],
       })
-      .behave(VerticalMove, 'bVerticalMove', {
+      .behave(VerticalMove, {
         range: 100,
         startPct: 0.5,
         useKeyboard: false,
@@ -35,7 +35,7 @@ class TwoWayMoveSample extends Scene {
       .initSprite({
         texture: ['asteroids', 'shield'],
       })
-      .behave(HorizontalMove, 'bHorizontalMove', {
+      .behave(HorizontalMove, {
         range: 160,
         startPct: 0,
         useKeyboard: false,

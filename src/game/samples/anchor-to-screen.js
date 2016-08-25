@@ -16,7 +16,7 @@ class AnchorToScreenSample extends Scene {
         texture: ['asteroids', 'shield'],
         anchor: { x: 0.5, y: 0.5 },
       })
-      .behave(AnchorToScreen, 'bAnchorToScreen', {
+      .behave(AnchorToScreen, {
         left: '20%',
         top: '20%',
       });
@@ -26,7 +26,7 @@ class AnchorToScreenSample extends Scene {
         texture: ['asteroids', 'power'],
         anchor: { x: 0.5, y: 0.5 },
       })
-      .behave(AnchorToScreen, 'bAnchorToScreen', {
+      .behave(AnchorToScreen, {
         right: '20%',
         top: '20%',
       });
@@ -36,7 +36,7 @@ class AnchorToScreenSample extends Scene {
         texture: ['asteroids', 'power'],
         anchor: { x: 0.5, y: 0.5 },
       })
-      .behave(AnchorToScreen, 'bAnchorToScreen', {
+      .behave(AnchorToScreen, {
         left: '20%',
         bottom: '20%',
       });
@@ -46,7 +46,7 @@ class AnchorToScreenSample extends Scene {
         texture: ['asteroids', 'shield'],
         anchor: { x: 0.5, y: 0.5 },
       })
-      .behave(AnchorToScreen, 'bAnchorToScreen', {
+      .behave(AnchorToScreen, {
         right: '20%',
         bottom: '20%',
       });
