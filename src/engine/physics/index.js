@@ -300,14 +300,15 @@ World.prototype.update = function update(delta) {
     }
 
     for (j = this.collisionGroups[i].length - 1; j >= 0; j--) {
+      body = this.collisionGroups[i][j];
       if (useSpatialHash) {
-        if (this.collisionGroups[i][j] && this.collisionGroups[i][j].collideAgainst > 0) {
-          this.collide(this.collisionGroups[i][j]);
+        if (body && (!body.isStatic) && body.collideAgainst > 0) {
+          this.collide(body);
         }
       }
       else {
-        if (this.collisionGroups[i][j] && this.collisionGroups[i][j].collideAgainst.length > 0) {
-          this.collide(this.collisionGroups[i][j]);
+        if (body && (!body.isStatic) && body.collideAgainst.length > 0) {
+          this.collide(body);
         }
       }
     }
