@@ -107,7 +107,7 @@ class PhysicsSample extends Scene {
         },
       });
   }
-  addSolidBox(x, y, w, h, { color, mass = 0 }) {
+  addSolidBox(x, y, w, h, { color }) {
     return this.spawnActor(Actor, x, y, 'stage')
       .initGraphics({
         width: w,
@@ -115,7 +115,7 @@ class PhysicsSample extends Scene {
         color: color,
       })
       .initBody({
-        mass: mass,
+        isStatic: true,
         collisionGroup: GROUPS.SOLID,
       });
     }
