@@ -45,6 +45,10 @@ class TilemapSample extends Scene {
 
     this.bg0 = new BackgroundMap(16, LAYER_1, loader.getTexture('pizza-boy.png')).addTo(this.bottomLayer);
     this.bg1 = new BackgroundMap(16, LAYER_2, loader.getTexture('pizza-boy.png')).addTo(this.bottomLayer);
+
+    // Let the maps repeat
+    this.bg0.isRepeat = true;
+    this.bg1.isRepeat = true;
   }
   update(_, sec) {
     if (keyboard.down('LEFT')) {
