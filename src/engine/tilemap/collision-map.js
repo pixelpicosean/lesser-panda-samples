@@ -1,3 +1,5 @@
+'use strict';
+
 var utils = require('engine/utils');
 var physics = require('engine/physics');
 var Vector = require('engine/vector');
@@ -215,11 +217,11 @@ function CollisionMap(tilesize, data, group, tileShapes) {
 }
 
 /**
- * Generate bodies.
+ * Generate collision bodies.
  * @memberof CollisionMap#
  * @method generateShapes
  */
-CollisionMap.prototype.generateShapes = function generateShapes() {
+CollisionMap.prototype.generateShapes = function() {
   var i, j;
 
   // Create edges
@@ -382,7 +384,7 @@ CollisionMap.prototype.generateShapes = function generateShapes() {
 };
 
 /**
- * Destroy this layer.
+ * Remove collisions.
  * @memberof CollisionMap#
  * @method remove
  */
