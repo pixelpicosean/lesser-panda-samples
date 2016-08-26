@@ -72,36 +72,57 @@ function BackgroundMap(tilesize, data, tileset) {
 BackgroundMap.prototype = Object.create(PIXI.Container.prototype);
 BackgroundMap.prototype.constructor = BackgroundMap;
 
-/**
- * How many tiles are there in a row.
- * @memberof BackgroundMap#
- * @readonly
- */
-Object.defineProperty(BackgroundMap.prototype, 'totalTilesInRow', {
-  get: function() {
-    if (Array.isArray(this.data) && (this.data.length > 0) && Array.isArray(this.data[0])) {
-      return this.data[0].length;
-    }
-    else {
-      return 0;
-    }
-  }
-});
-
-/**
- * How many tiles are there in a column.
- * @memberof BackgroundMap#
- * @readonly
- */
-Object.defineProperty(BackgroundMap.prototype, 'totalTilesInColumn', {
-  get: function() {
-    if (Array.isArray(this.data)) {
-      return this.data.length;
-    }
-    else {
-      return 0;
-    }
-  }
+Object.defineProperties(BackgroundMap.prototype, {
+  /**
+   * Width of this map in pixel.
+   * @memberof BackgroundMap#
+   * @readonly
+   */
+  width: {
+    get: function() {
+      return this.widthInTile * this.tilesize;
+    },
+  },
+  /**
+   * Height of this map in pixel.
+   * @memberof BackgroundMap#
+   * @readonly
+   */
+  height: {
+    get: function() {
+      return this.heightInTile * this.tilesize;
+    },
+  },
+  /**
+   * Width of this map in tile.
+   * @memberof BackgroundMap#
+   * @readonly
+   */
+  widthInTile: {
+    get: function() {
+      if (Array.isArray(this.data) && (this.data.length > 0) && Array.isArray(this.data[0])) {
+        return this.data[0].length;
+      }
+      else {
+        return 0;
+      }
+    },
+  },
+  /**
+   * Height of this map in tile.
+   * @memberof BackgroundMap#
+   * @readonly
+   */
+  heightInTile: {
+    get: function() {
+      if (Array.isArray(this.data)) {
+        return this.data.length;
+      }
+      else {
+        return 0;
+      }
+    },
+  },
 });
 
 /**
@@ -113,6 +134,47 @@ Object.defineProperty(BackgroundMap.prototype, 'totalTilesInColumn', {
 BackgroundMap.prototype.setData = function(data) {
   this.data = data;
   this.modificationMarker = 0;
+};
+
+/**
+ * Set the tile at the pixel coordinates.
+ * @param {number} x
+ * @param {number} y
+ * @param {number} tileIdx New tile index
+ */
+BackgroundMap.prototype.setTile = function(x, y, tileIdx) {
+  if (x < 0 || x > this.widthInTile * this.tilesize || y < 0 || y > this.heightInTile * this.tilesize) {
+    console.log('Cannot set a tile since the coordinate is out of range!');
+    return;
+  }
+
+  // Calculate tile coordinate
+  var tx = Math.floor(x / this.tilesize);
+  var ty = Math.floor(y / this.tilesize);
+
+  // Update map data
+  this.data[ty][tx] = tileIdx;
+
+  // Request buffer re-upload
+  this.modificationMarker = 0;
+};
+
+/**
+ * Get the tile at pixel coordinates.
+ * @param  {number} x
+ * @param  {number} y
+ * @return {number}   Tile at the coordinates, 0 if no one is found.
+ */
+BackgroundMap.prototype.getTile = function(x, y) {
+  if (x < 0 || x > this.widthInTile * this.tilesize || y < 0 || y > this.heightInTile * this.tilesize) {
+    return 0;
+  }
+
+  // Calculate tile coordinate
+  var tx = Math.floor(x / this.tilesize);
+  var ty = Math.floor(y / this.tilesize);
+
+  return this.data[ty][tx];
 };
 
 /**
@@ -153,7 +215,7 @@ BackgroundMap.prototype.updateRenderTileBuffer = function() {
   var tilesPerCol = bottomRightR - topLeftR + 1;
 
   var tilesToRender = tilesPerRow * tilesPerCol;
-  var needUpdateRTB = false;
+  var needUpdateRTB = (this.modificationMarker === 0);
 
   // Check whether tile to be rendered changes
   if (tilesToRender !== this.tilesInRenderBuffer) {
@@ -175,8 +237,8 @@ BackgroundMap.prototype.updateRenderTileBuffer = function() {
   // Update render tile buffer if required
   if (needUpdateRTB) {
     var r, q, maxR, maxQ, tileIdx, pb = this.pointsBuf, index = 0;
-    maxR = Math.min(topLeftR + tilesPerCol + 1, this.totalTilesInColumn);
-    maxQ = Math.min(topLeftQ + tilesPerRow + 1, this.totalTilesInRow);
+    maxR = Math.min(topLeftR + tilesPerCol + 1, this.heightInTile);
+    maxQ = Math.min(topLeftQ + tilesPerRow + 1, this.widthInTile);
     for (r = topLeftR; r < maxR; r++) {
       for (q = topLeftQ; q < maxQ; q++) {
         tileIdx = this.data[r][q] - 1;
@@ -214,7 +276,7 @@ BackgroundMap.prototype.updateRenderTileBuffer = function() {
  * @return {number}
  */
 BackgroundMap.prototype.getColAt = function(x) {
-  return utils.clamp(Math.floor(x / this.tilesize), 0, this.totalTilesInRow - 1);
+  return utils.clamp(Math.floor(x / this.tilesize), 0, this.widthInTile - 1);
 };
 
 /**
@@ -225,7 +287,7 @@ BackgroundMap.prototype.getColAt = function(x) {
  * @return {number}
  */
 BackgroundMap.prototype.getRowAt = function(y) {
-  return utils.clamp(Math.floor(y / this.tilesize), 0, this.totalTilesInColumn - 1);
+  return utils.clamp(Math.floor(y / this.tilesize), 0, this.heightInTile - 1);
 };
 
 /**
