@@ -2,6 +2,7 @@ import engine from 'engine/core';
 import Scene from 'engine/scene';
 import BackgroundMap from 'engine/tilemap/background-map';
 import loader from 'engine/loader';
+import keyboard from 'engine/keyboard';
 
 const LAYER_1 = [
   [86, 86, 86, 86, 86, 86, 86, 86, 86, 86, 86, 86, 86, 86, 86, 86, 86, 86, 86, 86],
@@ -42,8 +43,22 @@ class TilemapSample extends Scene {
       .createLayer('bottomLayer', 'stage')
       .createLayer('topLayer', 'stage');
 
-    new BackgroundMap(16, LAYER_1, loader.getTexture('pizza-boy.png')).addTo(this.bottomLayer);
-    new BackgroundMap(16, LAYER_2, loader.getTexture('pizza-boy.png')).addTo(this.bottomLayer);
+    this.bg0 = new BackgroundMap(16, LAYER_1, loader.getTexture('pizza-boy.png')).addTo(this.bottomLayer);
+    this.bg1 = new BackgroundMap(16, LAYER_2, loader.getTexture('pizza-boy.png')).addTo(this.bottomLayer);
+  }
+  update(_, sec) {
+    if (keyboard.down('LEFT')) {
+      this.bg0.position.x = this.bg1.position.x = this.bg0.position.x - 40 * sec;
+    }
+    else if (keyboard.down('RIGHT')) {
+      this.bg0.position.x = this.bg1.position.x = this.bg0.position.x + 40 * sec;
+    }
+    if (keyboard.down('UP')) {
+      this.bg0.position.y = this.bg1.position.y = this.bg0.position.y - 40 * sec;
+    }
+    else if (keyboard.down('DOWN')) {
+      this.bg0.position.y = this.bg1.position.y = this.bg0.position.y + 40 * sec;
+    }
   }
 }
 
