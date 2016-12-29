@@ -1,6 +1,15 @@
 # Samples of LesserPanda framework
 
+- [x] Entity
 - [x] Timer
-- [x] [Behavior] Anchor to screen
-- [x] [Behavior] Two way move
+- [x] Tween
+- [x] Physics
+- [ ] Action
+- [ ] BackgroundMap
+- [ ] CollisionMap
+- [ ] [Behavior] Anchor to screen
 - [ ] [Behavior] Asteroid
+- [ ] [Behavior] Face the mouse
+- [ ] [Behavior] Rotate around
+- [ ] [Behavior] Steering
+- [ ] [Behavior] Two way move
