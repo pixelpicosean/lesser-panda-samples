@@ -1,20 +1,20 @@
-import loader from 'engine/loader';
-import physics from 'engine/physics';
+const loader = require('engine/loader');
+const { getGroupMask } = require('engine/physics');
 
-// Constants
-export const GROUPS = {
-  SOLID:  physics.getGroupMask(0),
-  BOX:    physics.getGroupMask(1),
-  CIRCLE: physics.getGroupMask(2),
+// Group constants for collision detection
+module.exports.Groups = {
+  Solid:  getGroupMask(0),
+  Box:    getGroupMask(1),
+  Circle: getGroupMask(2),
 };
 
 // Load textures
-loader.addAsset('asteroids.json', 'asteroids');
-loader.addAsset('pizza-boy.png');
-loader.addAsset('pizza-boy.json');
-loader.addAsset('tank-base.png', 'tank-base');
-loader.addAsset('tank-cannon.png', 'tank-cannon');
+loader.add('asteroids', 'asteroids.json');
+loader.add('pizza-boy.png');
+loader.add('pizza-boy.json');
+loader.add('tank-base', 'tank-base.png');
+loader.add('tank-cannon', 'tank-cannon.png');
 
 // Load bitmap fonts
-loader.addAsset('KenPixel.fnt');
-loader.addAsset('04b03.fnt');
+loader.add('KenPixel.fnt');
+loader.add('04b03.fnt');
