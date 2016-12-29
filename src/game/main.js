@@ -6,7 +6,7 @@ const Loading = require('game/Loading');
 // Samples
 const SampleEntity = require('game/samples/entity');
 const SampleTimer = require('game/samples/timer');
-// const SampleTween = require('game/samples/tween');
+const SampleTween = require('game/samples/tween');
 // const SamplePhysics = require('game/samples/physics');
 
 // const SampleAction = require('game/samples/action');
@@ -28,7 +28,7 @@ class Boot extends Game {
     //       in most cases.
 
     // Switch to a sample game
-    core.setGame(SampleTimer);
+    core.setGame(SampleTween);
   }
 };
 
