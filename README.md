@@ -1,4 +1,4 @@
-# Samples of LesserPanda game engine
+# Samples of LesserPanda framework
 
 - [x] Timer
 - [x] [Behavior] Anchor to screen

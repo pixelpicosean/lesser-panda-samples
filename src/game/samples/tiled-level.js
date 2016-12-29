@@ -6,7 +6,6 @@ import CollisionMap from 'engine/tilemap/collision-map';
 import keyboard from 'engine/keyboard';
 import loader from 'engine/loader';
 import tiledToMap from 'engine/level/tiled-to-map';
-
 import Actor from 'engine/actor';
 
 import { GROUPS } from 'game/data';
