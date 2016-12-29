@@ -5,20 +5,19 @@ const Loading = require('game/Loading');
 
 // Samples
 const SampleEntity = require('game/samples/entity');
+const SampleTimer = require('game/samples/timer');
+// const SampleTween = require('game/samples/tween');
+// const SamplePhysics = require('game/samples/physics');
+
 // const SampleAction = require('game/samples/action');
 // const SampleAnchorToScreen = require('game/samples/anchor-to-screen');
 // const SampleAsteroids = require('game/samples/asteroids');
 // const SampleFaceTheMouse = require('game/samples/face-the-mouse');
-// const SamplePhysics = require('game/samples/physics');
 // const SampleRotateAround = require('game/samples/rotate-around');
 // const SampleSteering = require('game/samples/steering');
 // const SampleTilemap = require('game/samples/tilemap');
 // const SampleTilemapCollision = require('game/samples/tilemap-collision');
-// const SampleLevel = require('game/samples/level');
-// const SampleTiledLevel = require('game/samples/tiled-level');
-// const SampleTimer = require('game/samples/timer');
 // const SampleTwoWayMove = require('game/samples/two-way-move');
-// const SampleTween = require('game/samples/tween');
 
 class Boot extends Game {
   awake() {
@@ -29,7 +28,7 @@ class Boot extends Game {
     //       in most cases.
 
     // Switch to a sample game
-    core.setGame(SampleEntity);
+    core.setGame(SampleTimer);
   }
 };
 
