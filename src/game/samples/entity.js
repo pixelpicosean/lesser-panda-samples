@@ -28,13 +28,13 @@ class MyEntity extends Entity {
     super(x, y, null);
 
     // Create a Graphics as our `gfx`
-    this.gfx = Graphics({
+    this.addComponent(Graphics({
       shape: 'Box',
       width: s.width || 10,
       height: s.height || 10,
       color: s.color || 0xff2f62,
-    });
-    this.coll = Collider({
+    }));
+    this.addComponent(Collider({
       shape: 'Box',
       width: s.width || 10,
       height: s.height || 10,
@@ -42,7 +42,7 @@ class MyEntity extends Entity {
       collisionGroup: Groups.Box,
       collideAgainst: Groups.Solid | Groups.Box,
       collide: () => true,
-    });
+    }));
   }
 }
 
