@@ -210,15 +210,15 @@ class SystemPhysics extends System {
         halfWidth = coll.shape.width * 0.5;
         halfHeight = coll.shape.height * 0.5;
 
-        coll.lastLeft = Math.floor(coll.last.x - halfWidth);
-        coll.lastRight = Math.floor(coll.last.x + halfWidth);
-        coll.lastTop = Math.floor(coll.last.y - halfHeight);
-        coll.lastBottom = Math.floor(coll.last.y + halfHeight);
+        coll.lastLeft = coll.last.x - halfWidth;
+        coll.lastRight = coll.last.x + halfWidth;
+        coll.lastTop = coll.last.y - halfHeight;
+        coll.lastBottom = coll.last.y + halfHeight;
 
-        coll.left = Math.floor(coll.position.x - halfWidth);
-        coll.right = Math.floor(coll.position.x + halfWidth);
-        coll.top = Math.floor(coll.position.y - halfHeight);
-        coll.bottom = Math.floor(coll.position.y + halfHeight);
+        coll.left = coll.position.x - halfWidth;
+        coll.right = coll.position.x + halfWidth;
+        coll.top = coll.position.y - halfHeight;
+        coll.bottom = coll.position.y + halfHeight;
       }
 
       // Insert the hash and test collisions
@@ -317,10 +317,7 @@ class SystemPhysics extends System {
    */
   onEntitySpawn(ent) {
     if (ent.coll) {
-      ent.coll.entity = ent;
       this.addCollider(ent.coll);
-      // Override coll's position with the entity's
-      ent.coll.position = ent.position;
     }
   }
   /**
@@ -332,7 +329,6 @@ class SystemPhysics extends System {
   onEntityRemove(ent) {
     if (ent.coll) {
       ent.coll.remove();
-      ent.coll.entity = null;
     }
   }
 }
