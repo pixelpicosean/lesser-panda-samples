@@ -5,6 +5,7 @@ const Loading = require('game/Loading');
 
 // Samples
 const SampleEntity = require('game/samples/entity');
+const SampleCOASprite = require('game/samples/coa-sprite');
 const SampleTimer = require('game/samples/timer');
 const SampleTween = require('game/samples/tween');
 const SamplePhysics = require('game/samples/physics');

@@ -4,6 +4,7 @@
 - [x] Timer
 - [x] Tween
 - [x] Physics
+- [x] COASprite (cutout animation from Spriter)
 - [ ] Action
 - [ ] BackgroundMap
 - [ ] CollisionMap
